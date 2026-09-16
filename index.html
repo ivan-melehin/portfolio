@@ -241,6 +241,37 @@ section{padding:120px 0;border-bottom:1px solid var(--line)}
   grid-template-columns:1fr 1fr;
   gap:40px;
 }
+
+.text-flow{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin:0;
+  font-family:"Montserrat",monospace;
+  font-size:24px;
+  line-height:1.5;
+  letter-spacing:-.03em;
+}
+
+.text-flow span,.text-flow strong{
+  position:relative;
+  display:block;
+}
+
+.text-flow span:not(:last-child)::after{
+  content:"↓";
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1;
+}
+
+.text-flow strong{
+  color:var(--accent);
+  font-weight:600;
+}
+
 .detail h3{
   font-size:13px;
   text-transform:uppercase;
@@ -457,7 +488,9 @@ footer{
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
   <div class="container nav">
     <nav class="nav-left">
       <a href="#about">Обо мне</a>
@@ -523,14 +556,14 @@ footer{
 
     <div class="about">
 
-      <div class="about-text">
-        Я понимаю бизнес-процесс →
-        нахожу возможность автоматизации →
-        формирую требования →
-        проектирую решение →
-        могу сам сделать прототип →
-        <strong>измеряю результат.</strong>
-      </div>
+      <div class="about-text text-flow">
+  <span>Я понимаю бизнес-процесс</span>
+  <span>нахожу возможность автоматизации</span>
+  <span>формирую требования</span>
+  <span>проектирую решение</span>
+  <span>могу сам сделать прототип</span>
+  <strong>измеряю результат.</strong>
+</div>
 
       <div class="about-details">
 
@@ -546,7 +579,7 @@ footer{
           <h3>Развиваю</h3>
           <p>
             JavaScript<br>
-            AI-assisted development
+            1C
           </p>
         </div>
 
