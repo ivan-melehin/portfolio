@@ -1,0 +1,28 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node scripts/build-tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivan-melehin/portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ivan-melehin/portfolio/issues"
+  },
+  "homepage": "https://github.com/ivan-melehin/portfolio#readme",
+  "dependencies": {
+    "marked": "^18.0.13"
+  }
+}
