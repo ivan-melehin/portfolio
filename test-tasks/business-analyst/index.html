@@ -19,6 +19,8 @@
 
 *{box-sizing:border-box}
 
+html{scroll-behavior:smooth}
+
 body{
   max-width:900px;
   margin:0 auto;
@@ -149,6 +151,40 @@ img{
   height:auto;
 }
 
+.to-top{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  width:45px;
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--text);
+  border-radius:50%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  font-size:22px;
+  text-decoration:none;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  transition:.25s;
+  z-index:10;
+}
+
+.to-top.visible{
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+.to-top:hover{
+  background:var(--text);
+  color:var(--bg);
+}
+
 @media(max-width:600px){
   body{
     padding:25px 18px 50px;
@@ -172,6 +208,13 @@ img{
   pre{
     padding:15px;
     font-size:13px;
+  }
+
+  .to-top{
+    right:18px;
+    bottom:18px;
+    width:42px;
+    height:42px;
   }
 }
 </style>
@@ -1123,5 +1166,10 @@ img{
 </tr>
 </tbody></table>
 
+<a class="to-top" href="#" aria-label="Наверх">↑</a>
+<script>
+const toTop=document.querySelector(".to-top");
+window.addEventListener("scroll",()=>toTop.classList.toggle("visible",window.scrollY>500));
+</script>
 </body>
 </html>
