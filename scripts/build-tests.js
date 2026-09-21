@@ -2,7 +2,9 @@ const fs=require("fs");
 const path=require("path");
 const {marked}=require("marked");
 
-const dir=path.join(__dirname,"..","tests");
+const dir=path.join(__dirname,"..","test-tasks");
+
+const favicon="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23171717'/><text x='50' y='68' text-anchor='middle' font-family='Arial' font-size='42' font-weight='900' fill='%23f5f3ee'>IM</text></svg>";
 
 const css=`
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
@@ -35,16 +37,22 @@ a{
   text-underline-offset:3px;
 }
 
-.back{
-  display:inline-block;
+.top-links{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
   margin-bottom:60px;
+}
+
+.back,.github{
   font-family:'Montserrat',sans-serif;
   font-size:13px;
   font-weight:600;
   text-decoration:none;
 }
 
-.back:hover{color:var(--accent)}
+.back:hover,.github:hover{color:var(--accent)}
 
 h1,h2,h3,h4{
   font-family:'Space Grotesk',Arial,sans-serif;
@@ -69,9 +77,7 @@ h3{
   font-size:22px;
 }
 
-h4{
-  font-size:18px;
-}
+h4{font-size:18px}
 
 p{margin:0 0 20px}
 
@@ -150,7 +156,7 @@ img{
     font-size:16px;
   }
 
-  .back{margin-bottom:40px}
+  .top-links{margin-bottom:40px}
 
   h1{
     margin-bottom:40px;
@@ -171,28 +177,40 @@ img{
 }
 `;
 
-fs.readdirSync(dir)
-  .filter(file=>file.endsWith(".md"))
-  .forEach(file=>{
-    const md=fs.readFileSync(path.join(dir,file),"utf8");
-    const html=marked.parse(md);
-    const title=path.basename(file,".md");
+function findMarkdownFiles(directory){
+  return fs.readdirSync(directory,{withFileTypes:true}).flatMap(entry=>{
+    const fullPath=path.join(directory,entry.name);
+    if(entry.isDirectory())return findMarkdownFiles(fullPath);
+    return entry.name.endsWith(".md")?[fullPath]:[];
+  });
+}
 
-    const page=`<!DOCTYPE html>
+findMarkdownFiles(dir).forEach(filePath=>{
+  const md=fs.readFileSync(filePath,"utf8");
+  const html=marked.parse(md);
+  const title=path.basename(filePath,".md");
+  const relativeDir=path.relative(dir,path.dirname(filePath)).replace(/\\/g,"/");
+  const githubUrl=`https://github.com/ivan-melehin/portfolio/tree/main/test-tasks/${relativeDir}`;
+  const output=path.join(path.dirname(filePath),"index.html");
+
+  const page=`<!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="${favicon}">
 <title>${title} — Портфолио</title>
 <style>${css}</style>
 </head>
 <body>
-<a class="back" href="../index.html">← Назад к портфолио</a>
+<div class="top-links">
+<a class="back" href="../../index.html">← Назад к портфолио</a>
+<a class="github" href="${githubUrl}" target="_blank" rel="noopener">GitHub ↗</a>
+</div>
 ${html}
 </body>
 </html>`;
 
-    const output=file.replace(/\\.md$/,".html");
-    fs.writeFileSync(path.join(dir,output),page);
-    console.log(\`✓ \${file} → \${output}\`);
-  });
+  fs.writeFileSync(output,page);
+  console.log(`✓ ${filePath} → ${output}`);
+});
