@@ -204,7 +204,7 @@ findMarkdownFiles(dir).forEach(filePath=>{
 </head>
 <body>
 <div class="top-links">
-<a class="back" href="../../index.html">← Назад к портфолио</a>
+<a class="back" href="https://ivan-melehin.github.io/portfolio/#test-tasks">← Назад к портфолио</a>
 <a class="github" href="${githubUrl}" target="_blank" rel="noopener">GitHub ↗</a>
 </div>
 ${html}
@@ -214,3 +214,5 @@ ${html}
   fs.writeFileSync(output,page);
   console.log(`✓ ${filePath} → ${output}`);
 });
+
+// npm run build Запуск сборщика
