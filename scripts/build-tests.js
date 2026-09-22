@@ -262,3 +262,5 @@ window.addEventListener("scroll",()=>toTop.classList.toggle("visible",window.scr
   fs.writeFileSync(output,page);
   console.log(`✓ ${filePath} → ${output}`);
 });
+
+// запуск сборки npm run build
