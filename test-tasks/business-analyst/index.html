@@ -149,6 +149,37 @@ th{
 img{
   max-width:100%;
   height:auto;
+  cursor:zoom-in;
+}
+
+.image-viewer{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:30px;
+  background:rgba(0,0,0,.85);
+  opacity:0;
+  visibility:hidden;
+  transition:.2s;
+  z-index:100;
+  cursor:zoom-out;
+}
+
+.image-viewer.visible{
+  opacity:1;
+  visibility:visible;
+}
+
+.image-viewer img{
+  max-width:95vw;
+  max-height:90vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  cursor:default;
+  box-shadow:0 10px 40px rgba(0,0,0,.4);
 }
 
 .to-top{
@@ -215,6 +246,15 @@ img{
     bottom:18px;
     width:42px;
     height:42px;
+  }
+
+  .image-viewer{
+    padding:15px;
+  }
+
+  .image-viewer img{
+    max-width:100vw;
+    max-height:90vh;
   }
 }
 </style>
@@ -1165,9 +1205,42 @@ img{
 </tbody></table>
 
 <a class="to-top" href="#" aria-label="Наверх">↑</a>
+
+<div class="image-viewer" aria-hidden="true">
+<img src="" alt="">
+</div>
+
 <script>
 const toTop=document.querySelector(".to-top");
+const imageViewer=document.querySelector(".image-viewer");
+const viewerImage=imageViewer.querySelector("img");
+
 window.addEventListener("scroll",()=>toTop.classList.toggle("visible",window.scrollY>500));
+
+document.querySelectorAll("body > img, body img:not(.image-viewer img)").forEach(img=>{
+  img.addEventListener("click",()=>{
+    viewerImage.src=img.src;
+    viewerImage.alt=img.alt||"";
+    imageViewer.classList.add("visible");
+    imageViewer.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  });
+});
+
+function closeImageViewer(){
+  imageViewer.classList.remove("visible");
+  imageViewer.setAttribute("aria-hidden","true");
+  viewerImage.src="";
+  document.body.style.overflow="";
+}
+
+imageViewer.addEventListener("click",event=>{
+  if(event.target===imageViewer)closeImageViewer();
+});
+
+document.addEventListener("keydown",event=>{
+  if(event.key==="Escape"&&imageViewer.classList.contains("visible"))closeImageViewer();
+});
 </script>
 </body>
 </html>
